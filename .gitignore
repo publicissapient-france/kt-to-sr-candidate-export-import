@@ -3,3 +3,4 @@ kt-to-sr-service/.envrc
 node_modules
 jspm_packages
 .serverless
+*.iml
