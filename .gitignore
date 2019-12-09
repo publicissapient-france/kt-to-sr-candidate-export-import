@@ -1,0 +1,5 @@
+kt-to-sr-service/.envrc
+.idea
+node_modules
+jspm_packages
+.serverless
