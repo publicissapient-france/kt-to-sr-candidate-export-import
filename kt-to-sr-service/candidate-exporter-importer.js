@@ -1,10 +1,10 @@
-const {syncTags} = require("./cei-tag");
-const {syncStatus} = require("./cei-status");
-const {createSrCandidate} = require("./cei-sr-api");
-const {getKtCandidate} = require("./cei-kt-api");
-const {syncHistory} = require("./cei-history");
-const {toSrExperience} = require("./cei-experience");
-const {toSrEducation} = require("./cei-education");
+const {syncTags} = require('./cei-tag');
+const {syncStatus} = require('./cei-status');
+const {createSrCandidate} = require('./cei-sr-api');
+const {getKtCandidate} = require('./cei-kt-api');
+const {syncHistory} = require('./cei-history');
+const {toSrExperience} = require('./cei-experience');
+const {toSrEducation} = require('./cei-education');
 
 const transformKtCandidateToSrCandidate = (ktCandidate) => ({
   firstName: ktCandidate.content.firstname,
@@ -42,8 +42,16 @@ const transformKtCandidateToSrCandidate = (ktCandidate) => ({
   // internal: true
 });
 
-const main = async () => {
-  const ktCandidateId = process.argv[2];
+const ktToSr = async (ktCandidateId) => {
+  if (!ktCandidateId) {
+    throw `KinTribe candidate id required`;
+  }
+  if (!process.env.KT_ENDPOINT || !process.env.KT_TOKEN) {
+    throw `Environment variable KT_ENDPOINT and KT_TOKEN required`;
+  }
+  if (!process.env.SR_ENDPOINT || !process.env.SR_TOKEN) {
+    throw `Environment variable SR_ENDPOINT and SR_TOKEN required`;
+  }
   console.info(`Processing KinTribe candidate ${ktCandidateId}`);
   const ktCandidate = await getKtCandidate(ktCandidateId);
   const srCandidate = transformKtCandidateToSrCandidate(ktCandidate);
@@ -56,7 +64,12 @@ const main = async () => {
   await syncTags(id, ktCandidate.content.skills, ktCandidate.content.languages, ktCandidate.content.categories);
   console.info(`Tags synced`);
   console.info(`🎉 Candidate ${ktCandidateId} processed`);
+  return {
+    ktCandidateId,
+    srCandidateId: id,
+  };
 };
 
-main()
-  .catch(err => err.response ? console.error(err.response.data) : console.error(err));
+module.exports = {
+  ktToSr,
+};

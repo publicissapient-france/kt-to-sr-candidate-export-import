@@ -1,0 +1,20 @@
+service: kt-to-sr-service
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-west-3
+
+functions:
+  ktToSr:
+    handler: handler.ktToSr
+    environment:
+      KT_ENDPOINT: ${env:KT_ENDPOINT}
+      KT_TOKEN: ${env:KT_TOKEN}
+      SR_ENDPOINT: ${env:SR_ENDPOINT}
+      SR_TOKEN: ${env:SR_TOKEN}
+    events:
+      - http:
+          path: ktToSr
+          method: post
+          cors: true
