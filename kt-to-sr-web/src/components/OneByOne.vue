@@ -13,13 +13,12 @@
       <li>Kt tags transform...</li>
       <li>Kt status transform...</li>
       <li>Sr import...</li>
+      <li>⏳</li>
     </ul>
     <div class="one-by-one__result">
       <div class="one-by-one__result--success" v-if="success">
         🎉 Great! Candidate imported, check SmartRecruiters.
-        <pre>
-          {{success}}
-        </pre>
+        <pre>{{success}}</pre>
       </div>
       <div class="one-by-one__result--error" v-if="error">
         😱 An error occurred, contact Gerome or Benjamin with candidate id and time.
@@ -43,14 +42,16 @@
     },
     methods: {
       async importCandidate() {
+        this.loading = true;
+        this.success = null;
+        this.error = null;
         try {
-          this.loading = true;
           const res = await axios.post(`${process.env.VUE_APP_ENDPOINT}/ktToSr`, {ktCandidateId: this.candidateId});
-          this.success = res.body;
+          this.success = res.data;
           this.error = null;
         } catch (e) {
           this.success = null;
-          this.error = e.response.data;
+          this.error = e.response.data ? e.response.data : e;
         } finally {
           this.loading = false;
         }
@@ -109,7 +110,9 @@
     color: #FFFFFF;
     padding: 10px;
     margin: 10px 0;
-    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    width: auto;
   }
 
   .one-by-one__result--error {
@@ -119,7 +122,7 @@
     margin: 10px 0;
     display: flex;
     flex-direction: column;
-    width: 97%;
+    width: auto;
     overflow: scroll;
   }
 
