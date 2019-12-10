@@ -12,13 +12,13 @@ const MESSAGE_TYPE_MAP = {
   history: 'History'
 };
 
-const syncHistory = async (ktHistories, srCandidateId) => {
-  const histories = ktHistories
+const syncHistory = async (ktHistory, srCandidateId) => {
+  const history = ktHistory
     .filter(h => h.type !== 'history')
     .sort((h1, h2) => moment(h1.creation_date).isBefore(moment(h2.creation_date)) ? -1 : 1);
 
-  for (const ktHistory of histories) {
-    await createSrMessage(toSrMessageContent(ktHistory, srCandidateId));
+  for (const h of history) {
+    await createSrMessage(toSrMessageContent(h, srCandidateId));
   }
 };
 

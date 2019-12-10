@@ -1,3 +1,4 @@
+const {syncTags} = require("./cei-tag");
 const {syncStatus} = require("./cei-status");
 const {createSrCandidate} = require("./cei-sr-api");
 const {getKtCandidate} = require("./cei-kt-api");
@@ -50,7 +51,10 @@ const main = async () => {
   console.info(`Candidate created ${id}`);
   await syncHistory(ktCandidate.tasks_history, id);
   console.info(`History synced`);
-  await syncStatus(ktCandidate.missions, id);
+  await syncStatus(id, ktCandidate.missions);
+  console.info(`Status synced`);
+  await syncTags(id, ktCandidate.content.skills, ktCandidate.content.languages, ktCandidate.content.categories);
+  console.info(`Tags synced`);
   console.info(`🎉 Candidate ${ktCandidateId} processed`);
 };
 

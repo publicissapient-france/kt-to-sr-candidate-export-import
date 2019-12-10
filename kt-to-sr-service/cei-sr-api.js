@@ -15,6 +15,7 @@ const createSrMessage = async content => await axios.post(
       openNote: true,
     },
   }, {headers});
+
 const createSrCandidate = async (srCandidate) =>
   (await axios.post(
       `${srEndpoint}/candidates`,
@@ -22,10 +23,17 @@ const createSrCandidate = async (srCandidate) =>
       {headers})
   ).data;
 
-const updateSrCandidateStatus = async (srStatus, srCandidateId) =>
+const updateSrCandidateStatus = async (srCandidateId, srStatus) =>
   (await axios.put(
       `${srEndpoint}/candidates/${srCandidateId}/jobs/7c6c128f-6bec-4a6a-931a-d55fdc830346/status`,
       srStatus,
+      {headers})
+  ).data;
+
+const createSrTags = async (srCandidateId, srTags) =>
+  (await axios.put(
+      `${srEndpoint}/candidates/${srCandidateId}/tags`,
+      srTags,
       {headers})
   ).data;
 
@@ -33,4 +41,5 @@ module.exports = {
   createSrMessage,
   createSrCandidate,
   updateSrCandidateStatus,
+  createSrTags,
 };

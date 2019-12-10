@@ -49,9 +49,9 @@ const transformKtStatusToSrStatus = (ktStatus) => {
   }
 };
 
-const syncStatus = async (ktStatus, srCandidateId) => {
+const syncStatus = async (srCandidateId, ktStatus) => {
   if (ktStatus.length > 0) {
-    return await updateSrCandidateStatus(transformKtStatusToSrStatus(ktStatus[0].step_id), srCandidateId)
+    return await updateSrCandidateStatus(srCandidateId, transformKtStatusToSrStatus(ktStatus[0].step_id))
   }
 };
 
