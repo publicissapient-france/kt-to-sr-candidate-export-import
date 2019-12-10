@@ -45,13 +45,14 @@ const transformKtStatusToSrStatus = (ktStatus) => {
     case 'proposition-refusee-:-concurrence':
     case 'no-go-candidat':
     case 'refus-candidat-:-province-/-etranger':
+    case 'archived':
       return 'WITHDRAWN';
   }
 };
 
 const syncStatus = async (srCandidateId, ktStatus) => {
   if (ktStatus.length > 0) {
-    return await updateSrCandidateStatus(srCandidateId, transformKtStatusToSrStatus(ktStatus[0].step_id))
+    return await updateSrCandidateStatus(srCandidateId, transformKtStatusToSrStatus(ktStatus[ktStatus.length - 1].step_id))
   }
 };
 

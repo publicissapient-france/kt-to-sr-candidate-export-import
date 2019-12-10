@@ -20,10 +20,11 @@ module.exports.ktToSr = async (event) => {
       ),
     };
   } catch (e) {
+    e.response ? console.error(e.response.data) : console.error(e);
     return {
-      statusCode: 500,
+      statusCode: e.response ? e.response.status : 500,
       headers,
-      body: JSON.stringify(e),
+      body: e.response ? JSON.stringify(e.response.data) : JSON.stringify(e),
     };
   }
 };

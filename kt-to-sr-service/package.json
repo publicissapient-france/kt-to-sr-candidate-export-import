@@ -4,7 +4,8 @@
   "description": "Export KinTribe profile and import it to SmartRecruiters",
   "main": "candidate-exporter-importer.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy": "serverless deploy",
+    "dev": "node index.js 55704"
   },
   "author": "Xebia <blacroix@xebia.fr>",
   "license": "UNLICENSED",
