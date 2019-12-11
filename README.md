@@ -9,5 +9,5 @@
 * [x] History
 * [x] Profile
 * [x] Workflow status
-* [ ] Source
-* [ ] Recruiter in charge
+* [x] Source
+* [x] Recruiter in charge

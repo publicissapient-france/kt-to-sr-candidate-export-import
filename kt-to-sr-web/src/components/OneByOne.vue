@@ -7,13 +7,15 @@
     </div>
     <ul class="one-by-one__loading" v-if="loading">
       <li>Kt profile export...</li>
+      <li>Kt source transform...</li>
+      <li>Kt in charge transform...</li>
       <li>Kt experience transform...</li>
       <li>Kt education transform...</li>
       <li>Kt history transform...</li>
       <li>Kt tags transform...</li>
       <li>Kt status transform...</li>
       <li>Sr import...</li>
-      <li>⏳</li>
+      <li class="one-by-one__loading--animation"></li>
     </ul>
     <div class="one-by-one__result">
       <div class="one-by-one__result--success" v-if="success">
@@ -72,9 +74,10 @@
 
   .one-by-one__loading {
     background-color: #B4B4B4;
-    padding: 10px;
+    padding: 10px 10px 60px;
     list-style: none;
     color: #FFFFFF;
+    position: relative;
   }
 
   .one-by-one__body {
@@ -128,5 +131,26 @@
 
   .one-by-one__result--logs {
     width: 100%;
+  }
+
+  .one-by-one__loading--animation {
+    border: 4px solid #FFFFFF; /* Light grey */
+    border-top: 4px solid #079FFF; /* Blue */
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 </style>

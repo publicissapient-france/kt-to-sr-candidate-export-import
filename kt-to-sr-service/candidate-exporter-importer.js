@@ -1,3 +1,5 @@
+const {getSource} = require("./cei-source");
+const {getExtra} = require("./cei-extra");
 const {syncTags} = require('./cei-tag');
 const {syncStatus} = require('./cei-status');
 const {createSrCandidate} = require('./cei-sr-api');
@@ -6,7 +8,7 @@ const {syncHistory} = require('./cei-history');
 const {toSrExperience} = require('./cei-experience');
 const {toSrEducation} = require('./cei-education');
 
-const transformKtCandidateToSrCandidate = (ktCandidate) => ({
+const transformKtCandidateToSrCandidate = (ktCandidate, extra) => ({
   firstName: ktCandidate.content.firstname,
   lastName: ktCandidate.content.lastname,
   email: ktCandidate.content.contacts.mails.length > 0 ? ktCandidate.content.contacts.mails[0] : 'recrutement@xebia.fr',
@@ -22,6 +24,7 @@ const transformKtCandidateToSrCandidate = (ktCandidate) => ({
       //   "lng": 0
     }
   } : {}),
+  ...(extra ? getSource(extra) : {}),
   web: {
     // "skype": "string",
     linkedin: `https://www.linkedin.com/in/${ktCandidate.linkedin_id}/`,
@@ -42,7 +45,7 @@ const transformKtCandidateToSrCandidate = (ktCandidate) => ({
   // internal: true
 });
 
-const ktToSr = async (ktCandidateId) => {
+const checkRequirements = (ktCandidateId) => {
   if (!ktCandidateId) {
     throw `KinTribe candidate id required`;
   }
@@ -52,16 +55,24 @@ const ktToSr = async (ktCandidateId) => {
   if (!process.env.SR_ENDPOINT || !process.env.SR_TOKEN) {
     throw `Environment variable SR_ENDPOINT and SR_TOKEN required`;
   }
+  if (!process.env.EXTRA_FILE) {
+    console.warn(`⚠️ EXTRA_FILE environment variable missing: source and in charge person cannot be imported`)
+  }
+};
+
+const ktToSr = async (ktCandidateId) => {
+  checkRequirements(ktCandidateId);
   console.info(`Processing KinTribe candidate ${ktCandidateId}`);
   const ktCandidate = await getKtCandidate(ktCandidateId);
-  const srCandidate = transformKtCandidateToSrCandidate(ktCandidate);
+  const extra = await getExtra(ktCandidateId);
+  const srCandidate = transformKtCandidateToSrCandidate(ktCandidate, extra);
   const {id} = await createSrCandidate(srCandidate);
   console.info(`Candidate created ${id}`);
   await syncHistory(ktCandidate.tasks_history, id);
   console.info(`History synced`);
   await syncStatus(id, ktCandidate.missions);
   console.info(`Status synced`);
-  await syncTags(id, ktCandidate.content.skills, ktCandidate.content.languages, ktCandidate.content.categories);
+  await syncTags(id, ktCandidate.content.skills, ktCandidate.content.languages, ktCandidate.content.categories, extra);
   console.info(`Tags synced`);
   console.info(`🎉 Candidate ${ktCandidateId} processed`);
   return {

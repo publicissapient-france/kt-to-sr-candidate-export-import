@@ -14,8 +14,13 @@ functions:
       KT_TOKEN: ${env:KT_TOKEN}
       SR_ENDPOINT: ${env:SR_ENDPOINT}
       SR_TOKEN: ${env:SR_TOKEN}
+      EXTRA_FILE: ./extra.csv
     events:
       - http:
           path: ktToSr
           method: post
           cors: true
+
+package:
+  exclude:
+    - extra-example.csv
