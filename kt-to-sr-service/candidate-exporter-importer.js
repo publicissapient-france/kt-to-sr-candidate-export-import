@@ -1,3 +1,4 @@
+const {getSrJobId} = require("./cei-job");
 const {getSource} = require("./cei-source");
 const {getExtra} = require("./cei-extra");
 const {syncTags} = require('./cei-tag');
@@ -66,11 +67,11 @@ const ktToSr = async (ktCandidateId) => {
   const ktCandidate = await getKtCandidate(ktCandidateId);
   const extra = await getExtra(ktCandidateId);
   const srCandidate = transformKtCandidateToSrCandidate(ktCandidate, extra);
-  const {id} = await createSrCandidate(srCandidate);
+  const {id} = await createSrCandidate(srCandidate, getSrJobId(extra));
   console.info(`Candidate created ${id}`);
   await syncHistory(ktCandidate.tasks_history, id);
   console.info(`History synced`);
-  await syncStatus(id, ktCandidate.missions);
+  await syncStatus(id, getSrJobId(extra), ktCandidate.missions);
   console.info(`Status synced`);
   await syncTags(id, ktCandidate.content.skills, ktCandidate.content.languages, ktCandidate.content.categories, extra);
   console.info(`Tags synced`);

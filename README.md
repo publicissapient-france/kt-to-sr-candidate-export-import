@@ -11,3 +11,4 @@
 * [x] Workflow status
 * [x] Source
 * [x] Recruiter in charge
+* [x] Job

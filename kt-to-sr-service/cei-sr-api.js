@@ -16,16 +16,16 @@ const createSrMessage = async content => await axios.post(
     },
   }, {headers});
 
-const createSrCandidate = async (srCandidate) =>
+const createSrCandidate = async (srCandidate, jobId) =>
   (await axios.post(
-      `${srEndpoint}/candidates`,
+      `${srEndpoint}/jobs/${jobId}/candidates`,
       srCandidate,
       {headers})
   ).data;
 
-const updateSrCandidateStatus = async (srCandidateId, srStatus) =>
+const updateSrCandidateStatus = async (srCandidateId, srJobId, srStatus) =>
   (await axios.put(
-      `${srEndpoint}/candidates/${srCandidateId}/jobs/7c6c128f-6bec-4a6a-931a-d55fdc830346/status`,
+      `${srEndpoint}/candidates/${srCandidateId}/jobs/${srJobId}/status`,
       srStatus,
       {headers})
   ).data;
