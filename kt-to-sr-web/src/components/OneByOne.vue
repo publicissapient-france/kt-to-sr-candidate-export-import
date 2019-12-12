@@ -14,6 +14,7 @@
       <li>Kt history transform...</li>
       <li>Kt tags transform...</li>
       <li>Kt status transform...</li>
+      <li>Kt job transform...</li>
       <li>Sr import...</li>
       <li class="one-by-one__loading--animation"></li>
     </ul>
