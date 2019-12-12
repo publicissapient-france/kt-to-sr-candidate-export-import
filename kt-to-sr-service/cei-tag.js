@@ -7,7 +7,9 @@ const syncTags = async (srCandidateId, skills, languages, categories, extra) =>
       ...categories,
       ...languages,
       ...skills,
-    ].map(tag => tag.substring(0, 50))
+    ]
+      .map(tag => tag.substring(0, 50))
+      .map(tag => tag.toLocaleLowerCase())
   });
 
 module.exports = {
