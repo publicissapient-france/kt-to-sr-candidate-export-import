@@ -46,7 +46,7 @@ const transformKtStatusToSrStatus = (ktStatus) => {
     case 'no-go-candidat':
     case 'refus-candidat-:-province-/-etranger':
     case 'archived':
-      return 'WITHDRAWN';
+      return {status: 'WITHDRAWN'};
   }
 };
 
